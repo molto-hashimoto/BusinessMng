@@ -1,0 +1,36 @@
+{% extends "users/base.html" %}
+{% block content %}
+<form action="" method="POST">
+    <div class="{{ layout }}">
+        <div class="card">
+            <div class="card-body">
+            
+                <!-- フィールドに属さないエラー -->
+                {{ form.non_field_errors }}
+                
+                <table>
+                
+                {% for field in form %}
+                    <tr>
+                        <td><b>{{ field.label}}</b></td>
+                        <td> : {{ field }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">{{ field.errors }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">{{ field.help_text }}</td>
+                    </tr>
+                {% endfor %}
+                
+                </table>
+                <hr>
+
+                <button type="submit" class="btn btn-success btn-lg btn-block" >{{button_text}}</button>
+                <input type="hidden" name="next" value="{{ next }}" />
+                {% csrf_token %}
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,5 @@
+{{ user.username }} 様 ログイン確認
+
+下記URLよりサイトにログインしてください。
+
+{{ protocol}}://{{ domain }}{% url 'users:member' token %}
