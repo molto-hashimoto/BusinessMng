@@ -15,8 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth.decorators import login_required
+from decorator_include import decorator_include
 
+# 'projects/'にはアクセス制限をかける
+# 'users'、'projects'はnamespace
+# ラビバーに表示するトップ画面へのリンクのURLは'projects:top'とする。
+# ログイン後にリダイレクトするURLは'projects:top'とする。
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('users.urls')),
+    path('', include(('users.urls', 'users'),)),
+    path('projects/', decorator_include(login_required, ('projects.urls', 'projects'))),
 ]

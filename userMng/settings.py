@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'users',
+    'projects',
 ]
 
 MIDDLEWARE = [
@@ -129,7 +130,9 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'users.User'
 
 LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'users:top'
+LOGIN_REDIRECT_URL = 'projects:top'
+
+
 
 # メール送信内容をコンソール出力するための設定
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

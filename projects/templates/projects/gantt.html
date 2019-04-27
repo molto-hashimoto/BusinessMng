@@ -1,0 +1,50 @@
+
+{% extends "users/base.html" %}
+{% block content %}
+	{% load static %}
+
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'projects/reset.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'projects/lib/jquery.ganttView.css' %}" />
+
+	<style>
+		/* bootstrap css fix - begin */
+		#ganttChart div,
+		#ganttChart div:before,
+		#ganttChart div:after {
+		-webkit-box-sizing: initial;
+		-moz-box-sizing: initial;
+		box-sizing: initial;
+		}
+	</style>
+<!--
+	<ul>
+    {% for prj in object_list %}
+        <li>{{ prj.prj_name }}</li>
+    {% endfor %}
+    </ul>
+-->
+	<div id="ganttChart"></div>
+	<br/><br/>
+	<div id="eventMessage"></div>
+	<script type="text/javascript" src="{% static 'projects/lib/jquery-1.4.2.js' %}"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script type="text/javascript" src="{% static 'projects/lib/jquery.ganttView.js' %}"></script>
+	<script type="text/javascript" src="{% static 'projects/data.js' %}"></script>
+	<script type="text/javascript">
+		ganttData[0].name = "test";
+
+		$(function () {
+			$("#ganttChart").ganttView({ 
+				data: ganttData,
+				slideWidth: 900,
+				behavior: {
+					onClick: function (data) {/* イベント発生時の処理 */},
+					onResize: function (data) {},
+					onDrag: function (data) {}
+				}
+			});
+		});
+	</script>
+{% endblock %}

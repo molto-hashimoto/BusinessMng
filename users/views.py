@@ -26,8 +26,8 @@ import logging
 logger = logging.getLogger('command')
 
 # 未ログインの場合、表示されない。
-class top(generic.TemplateView):
-    template_name = 'users/top.html'
+class top(generic.RedirectView):
+    pattern_name = 'projects:top'
 
 class login(LoginView):
     form_class = AuthenticationForm
@@ -85,20 +85,25 @@ class member(generic.TemplateView):
 
         # 期限切れ
         except SignatureExpired:
+            logger.info(' --- login timeout ---')
             return HttpResponseBadRequest()
         # tokenが間違っている
         except BadSignature:
+            logger.info(' --- token error ---')
             return HttpResponseBadRequest()
         # tokenは問題なし
         else:
             try:
                 user = User.objects.get(pk=user_pk)
             except user.DoesNotExist:
+                logger.info(' --- user not exist ---')
                 return HttpResponseBadRequest()
             else:
+                logger.info(' --- login success ---'+ ' : ' + str(user))
                 # すべて問題なければログインする
                 auth_login(self.request, user)
-                return super().get(request, **kwargs)
+#                return super().get(request, **kwargs)
+                return HttpResponseRedirect(reverse_lazy('projects:top'))
 
         return HttpResponseBadRequest()
 

@@ -3,10 +3,9 @@
 {% block content %}
 
     <h3>User List</h3>
-    <a href="/signup">signup user</a>
     <ul>
     {% for user in object_list %}
-        <li><a href="{% url 'users:update' user.id %}">名前：{{ user.username }}</a></li>
+        <li>{{ user.username }}</li>
     {% endfor %}
     </ul>
 
