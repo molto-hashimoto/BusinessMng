@@ -15,8 +15,9 @@ class top(generic.ListView):
 
         logger.info(str(self.request.user) + ' : ' + str(self.request.user.is_authenticated))
         
-#        context.update({
-#            'mdl_tsk': mdl_Task.objects.all(),
-#        })
+        context.update({
+            'mdl_prj' : mdl_Project.objects.all(),
+            'mdl_tsk' : mdl_Task.objects.all(),
+        })
 
         return context

@@ -17,13 +17,7 @@
 		box-sizing: initial;
 		}
 	</style>
-<!--
-	<ul>
-    {% for prj in object_list %}
-        <li>{{ prj.prj_name }}</li>
-    {% endfor %}
-    </ul>
--->
+
 	<div id="ganttChart"></div>
 	<br/><br/>
 	<div id="eventMessage"></div>
@@ -33,7 +27,24 @@
 	<script type="text/javascript" src="{% static 'projects/lib/jquery.ganttView.js' %}"></script>
 	<script type="text/javascript" src="{% static 'projects/data.js' %}"></script>
 	<script type="text/javascript">
-		ganttData[0].name = "test";
+
+		let tmpdata = [{
+			id: 1, 
+			name: "{{mdl_prj.0.prj_name}}", 
+			series: [
+				{
+					name: "{{mdl_tsk.0.tsk_name}}",
+					start: new Date("{{mdl_tsk.0.tsk_date_start.isoformat }}"),
+					end: new Date("{{mdl_tsk.0.tsk_date_end.isoformat }}")
+				},
+				{
+					name: "{{mdl_tsk.1.tsk_name}}",
+					start: new Date("{{mdl_tsk.1.tsk_date_start.isoformat }}"),
+					end: new Date("{{mdl_tsk.1.tsk_date_end.isoformat }}")
+				}
+			]
+		}];
+		ganttData = tmpdata;
 
 		$(function () {
 			$("#ganttChart").ganttView({ 
