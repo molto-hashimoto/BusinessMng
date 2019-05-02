@@ -1,11 +1,6 @@
 
-{% extends "users/base.html" %}
+{% extends "projects/base.html" %}
 {% block content %}
-	{% load static %}
-
-	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-    <link rel="stylesheet" type="text/css" href="{% static 'projects/reset.css' %}" />
-	<link rel="stylesheet" type="text/css" href="{% static 'projects/lib/jquery.ganttView.css' %}" />
 
 	<style>
 		/* bootstrap css fix - begin */
@@ -18,33 +13,20 @@
 		}
 	</style>
 
+
 	<div id="ganttChart"></div>
 	<br/><br/>
 	<div id="eventMessage"></div>
-	<script type="text/javascript" src="{% static 'projects/lib/jquery-1.4.2.js' %}"></script>
-	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
-	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-	<script type="text/javascript" src="{% static 'projects/lib/jquery.ganttView.js' %}"></script>
-	<script type="text/javascript" src="{% static 'projects/data.js' %}"></script>
-	<script type="text/javascript">
 
-		let tmpdata = [{
-			id: 1, 
-			name: "{{mdl_prj.0.prj_name}}", 
-			series: [
-				{
-					name: "{{mdl_tsk.0.tsk_name}}",
-					start: new Date("{{mdl_tsk.0.tsk_date_start.isoformat }}"),
-					end: new Date("{{mdl_tsk.0.tsk_date_end.isoformat }}")
-				},
-				{
-					name: "{{mdl_tsk.1.tsk_name}}",
-					start: new Date("{{mdl_tsk.1.tsk_date_start.isoformat }}"),
-					end: new Date("{{mdl_tsk.1.tsk_date_end.isoformat }}")
-				}
-			]
-		}];
-		ganttData = tmpdata;
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'projects/reset.css' %}" />
+	<link rel="stylesheet" href="{% static 'projects/lib/jquery.ganttView.css' %}" />	
+	<script src="{% static 'projects/lib/jquery.ganttView.js' %}"></script>
+	<script src="{% static 'projects/data.js' %}"></script>
+	<script>
+
+		tmp = "{{gantt_data}}".split('&#39;').join('"');
+		ganttData = JSON.parse(tmp);
 
 		$(function () {
 			$("#ganttChart").ganttView({ 

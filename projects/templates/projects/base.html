@@ -1,0 +1,37 @@
+{% extends "users/base.html" %}
+{% block content0 %}
+
+{% load static %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
+
+    <!-- ナビバー -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <a class="navbar-brand" href="{% url 'projects:top' %}">Projects</a>
+        <button class="navbar-toggler" type="button" 
+            data-toggle="collapse" data-target="#navbarSupportedContent" 
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li>
+                <a class="nav-item nav-link" href="{% url 'projects:add_prj' %}">プロジェクト追加</a>
+                </li>
+                <li>
+                <a class="nav-item nav-link" href="{% url 'projects:add_tsk' %}">タスク追加</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-3">
+            <!-- メインコンテント -->
+            {% block content %}{% endblock %}
+    </div>
+{% endblock %}

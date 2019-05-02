@@ -1,0 +1,39 @@
+{% extends "projects/base.html" %}
+{% block content %}
+
+<script>
+    $(function () {
+        // 日付は、年-月-日 の形式でお願いする。
+        let dateFormat = 'yy-mm-dd';
+        $('#id_start').datepicker({
+            dateFormat: dateFormat
+        });
+        $('#id_end').datepicker({
+            dateFormat: dateFormat
+        });
+    });
+</script>
+
+<form action="" method="post">
+    <div class="{{layout}}">
+        <div class="card">
+        <h5 class="card-header text-center">
+            {{header_text}}
+        </h5>
+        <div class="card-body">
+            
+            {% csrf_token %}
+            <table class="table">
+                {{ form.as_table }}
+            </table>
+            <hr>
+
+            <div style="text-align:center;">
+                <button type="submit" class="btn btn-success w-25" >OK</button>
+                <a href="{% url 'projects:top' %}"><button type="button" class="ml-4 btn btn-danger w-25" >Cancel</button></a>
+            </div>
+        </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

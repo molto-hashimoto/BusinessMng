@@ -35,6 +35,7 @@ class login(LoginView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs) # はじめに継承元のメソッドを呼び出す
+        context["header_text"] = "Login"
         # ボタンのテキスト内容
         context["button_text"] = "ログイン"
         # レイアウト設定
@@ -117,10 +118,11 @@ class signup(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs) # はじめに継承元のメソッドを呼び出す
+        context["header_text"] = "Signup"
         # ボタンのテキスト内容
         context["button_text"] = "登録"
         # レイアウト設定
-        context["layout"] = "col-md-6 offset-md-3"
+        context["layout"] = "col-md-9 offset-md-1"
         return context
 
 class update(PasswordChangeView):
@@ -130,10 +132,11 @@ class update(PasswordChangeView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs) # はじめに継承元のメソッドを呼び出す
+        context["header_text"] = "Change Password"
         # ボタンのテキスト内容
         context["button_text"] = "登録"
         # レイアウト設定
-        context["layout"] = "col-md-6 offset-md-3"
+        context["layout"] = "col-md-9 offset-md-1"
         return context
 
 class list(generic.ListView):

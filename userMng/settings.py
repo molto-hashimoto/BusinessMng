@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'userMng.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'userMngDB',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'prjmngdb',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': '',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }

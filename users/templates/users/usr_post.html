@@ -1,28 +1,18 @@
-{% extends "users/base.html" %}
+{% extends "users/base2.html" %}
 {% block content %}
 <form action="" method="POST">
     <div class="{{ layout }}">
         <div class="card">
+            <h5 class="card-header text-center">
+                {{header_text}}
+            </h5>
             <div class="card-body">
             
                 <!-- フィールドに属さないエラー -->
                 {{ form.non_field_errors }}
                 
-                <table>
-                
-                {% for field in form %}
-                    <tr>
-                        <td><b>{{ field.label}}</b></td>
-                        <td> : {{ field }}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">{{ field.errors }}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">{{ field.help_text }}</td>
-                    </tr>
-                {% endfor %}
-                
+                <table class="table">
+                        {{ form.as_table }}
                 </table>
                 <hr>
 
