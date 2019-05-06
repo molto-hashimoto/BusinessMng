@@ -11,38 +11,45 @@ import json
 import logging
 logger = logging.getLogger('command')
 
-class top(generic.ListView):
-    context_object_name = 'prj_list'
-    model = mdl_Project
+def createGanttData():
+    
+    prj_data = []
+    prjs = mdl_Project.objects.all()
+
+    for idx,prj in enumerate(prjs):
+
+        series = []
+        tsks = prj.mdl_task_set.all()
+
+        for idx2,tsk in enumerate(tsks):
+            t = {}
+            t['name'] = tsk.name
+            t['start'] = tsk.start.isoformat()
+            t['end'] = tsk.end.isoformat()
+            series.append(t)
+
+        dict = {}
+        dict['id'] = idx
+        dict['name'] = prj.name
+        dict['series'] = series
+
+        prj_data.append(dict)
+
+    return prj_data
+
+# ガントチャートデフォルトスケール月単位でリダイレクトする
+class top(generic.RedirectView):
+    url = "m/"
+
+class gantt(generic.TemplateView):
     template_name = 'projects/gantt.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs) # はじめに継承元のメソッドを呼び出す
         logger.info(str(self.request.user) + ' : ' + str(self.request.user.is_authenticated))
 
-        prjs = mdl_Project.objects.all()
-        prj_data = []
-
-        for idx,prj in enumerate(prjs):
-
-            series = []
-            tsks = prj.mdl_task_set.all()
-
-            for idx2,tsk in enumerate(tsks):
-                t = {}
-                t['name'] = tsk.name
-                t['start'] = tsk.start.isoformat()
-                t['end'] = tsk.end.isoformat()
-                series.append(t)
-
-            dict = {}
-            dict['id'] = idx
-            dict['name'] = prj.name
-            dict['series'] = series
-
-            prj_data.append(dict)
-
-        context["gantt_data"] = prj_data
+        context["gantt_data"] = createGanttData()
+        context["scale"] = self.kwargs.get('scale')
         return context
 
 class add_prj(generic.CreateView):

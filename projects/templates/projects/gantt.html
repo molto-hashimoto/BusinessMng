@@ -25,13 +25,16 @@
 	<script src="{% static 'projects/data.js' %}"></script>
 	<script>
 
+		scale = "{{scale}}";
 		tmp = "{{gantt_data}}".split('&#39;').join('"');
 		ganttData = JSON.parse(tmp);
 
 		$(function () {
 			$("#ganttChart").ganttView({ 
+				scale: scale,
+				cellWidth: 21,
 				data: ganttData,
-				slideWidth: 900,
+				slideWidth: 500,
 				behavior: {
 					onClick: function (data) {/* イベント発生時の処理 */},
 					onResize: function (data) {},

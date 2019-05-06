@@ -5,13 +5,16 @@ from .models import mdl_Project, mdl_Task
 
 class form_prj(forms.ModelForm):
 
-    note = forms.CharField(widget=forms.Textarea) 
+    note = forms.CharField(widget=forms.Textarea, required=False) 
 
     class Meta:
         model = mdl_Project
-        fields = ("name", "status", "member", "note")
+        fields = ("name", "status", "member", "partner", "note")
 
 class form_tsk(forms.ModelForm):
+
+    note = forms.CharField(widget=forms.Textarea, required=False) 
+    
     class Meta:
         model = mdl_Task
-        fields = ("project", "name", "start", "end")
+        fields = ("project", "name", "status","member", "start", "end", "note")
