@@ -67,11 +67,11 @@ behavior: {
 
             // 最低表示横セル数
             var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
-            if (opts.scale == "d") {
-                var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
-            }
-            else if (opts.scale == "m"){
+            if (opts.scale == "m"){
                 var startEnd = DateUtils.getBoundaryMonthsFromData(opts.data, minDays);
+            }
+            else {
+                var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
             }
             opts.start = startEnd[0];
             opts.end = startEnd[1];

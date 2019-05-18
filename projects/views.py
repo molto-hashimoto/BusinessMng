@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import generic
+from django.urls import reverse_lazy, reverse
 
 from users.models import User
 from .models import mdl_Project, mdl_Task
@@ -39,7 +40,7 @@ def createGanttData():
 
 # ガントチャートデフォルトスケール月単位でリダイレクトする
 class top(generic.RedirectView):
-    url = "m/"
+    url = "gantt/m/21"
 
 class gantt(generic.TemplateView):
     template_name = 'projects/gantt.html'
@@ -50,13 +51,33 @@ class gantt(generic.TemplateView):
 
         context["gantt_data"] = createGanttData()
         context["scale"] = self.kwargs.get('scale')
+        context["size"] = self.kwargs.get('size')
         return context
+
+class sizeup(generic.RedirectView):
+
+    def get_redirect_url(self, *args, **kwargs):
+
+        size = self.kwargs['size']
+        if (size <= 100):
+            size += 20
+        self.url = reverse('projects:gantt', kwargs={'scale': self.kwargs['scale'], 'size': size})
+        return super().get_redirect_url(*args, **kwargs) 
+
+class sizedown(generic.RedirectView):
+
+    def get_redirect_url(self, *args, **kwargs):
+
+        size = self.kwargs['size']
+        if (size > 40):
+            size -= 20
+        self.url = reverse('projects:gantt', kwargs={'scale': self.kwargs['scale'], 'size': size})
+        return super().get_redirect_url(*args, **kwargs) 
 
 class add_prj(generic.CreateView):
     model = mdl_Project
     form_class = form_prj
     template_name = "projects/add_contents.html"
-    success_url = "/"  # 成功時にリダイレクトするURL
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs) # はじめに継承元のメソッドを呼び出す
@@ -64,13 +85,18 @@ class add_prj(generic.CreateView):
         context["header_text"] = "プロジェクト追加"
         # レイアウト設定
         context["layout"] = "col-md-6 offset-md-3"
+        context["scale"] = self.kwargs.get('scale')
+        context["size"] = self.kwargs.get('size')
         return context
+
+    def get_success_url(self):
+        self.success_url = reverse('projects:gantt', kwargs={'scale': self.kwargs['scale'], 'size': self.kwargs['size']})
+        return self.success_url
 
 class add_tsk(generic.CreateView):
     model = mdl_Task
     form_class = form_tsk
     template_name = "projects/add_contents.html"
-    success_url = "/"  # 成功時にリダイレクトするURL
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs) # はじめに継承元のメソッドを呼び出す
@@ -78,4 +104,10 @@ class add_tsk(generic.CreateView):
         context["header_text"] = "タスク追加"
         # レイアウト設定
         context["layout"] = "col-md-6 offset-md-3"
+        context["scale"] = self.kwargs.get('scale')
+        context["size"] = self.kwargs.get('size')
         return context
+
+    def get_success_url(self):
+        self.success_url = reverse('projects:gantt', kwargs={'scale': self.kwargs['scale'], 'size': self.kwargs['size']})
+        return self.success_url

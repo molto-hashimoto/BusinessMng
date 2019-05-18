@@ -24,20 +24,26 @@
         <div class="collapse navbar-collapse" id="navbarProjectsContent">
             <ul class="navbar-nav mr-auto">
                 <li>
-                <a class="nav-item nav-link" href="{% url 'projects:add_prj' %}">プロジェクト追加</a>
+                <a class="nav-item nav-link" href="{% url 'projects:add_prj' scale size %}">プロジェクト追加</a>
                 </li>
                 <li>
-                <a class="nav-item nav-link" href="{% url 'projects:add_tsk' %}">タスク追加</a>
+                <a class="nav-item nav-link" href="{% url 'projects:add_tsk' scale size %}">タスク追加</a>
                 </li>
             </ul>
-            <ul class="btn-group" role="group" aria-label="Basic example">
-				<a class="btn  btn-secondary" href="{% url 'projects:gantt' "d" %}">日</a>
-				<a class="btn  btn-secondary" href="{% url 'projects:gantt' "m" %}">月</a>
-				<a class="btn  btn-secondary" href="#">年</a>
+            <ul class="navbar-nav">
+                <li class="btn-group btn-group-sm mr-2" role="group">
+                    <a class="btn btn-secondary" role="button" href="{% url 'projects:gantt' "d" size %}">日</a>
+                    <a class="btn btn-secondary" role="button" href="{% url 'projects:gantt' "m" size %}">月</a>
+                    <a class="btn btn-secondary" role="button" href="#">年</a>
+                </li>
+                <li class="btn-group btn-group-sm" role="group">
+                    <a class="btn btn-secondary" role="button" href="{% url 'projects:sizedown' scale size %}"> - </a>
+                    <a class="btn btn-secondary" role="button" href="{% url 'projects:sizeup' scale size %}"> + </a>
+                </li>
             </ul>
         </div>
     </nav>
-    <div class="container mt-3">
+    <div class="container-fluid mt-3" id="gantt_container">
             <!-- メインコンテント -->
             {% block content %}{% endblock %}
     </div>

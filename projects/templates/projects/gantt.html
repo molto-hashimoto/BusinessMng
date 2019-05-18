@@ -8,11 +8,9 @@
 		#ganttChart div:before,
 		#ganttChart div:after {
 		-webkit-box-sizing: initial;
-		-moz-box-sizing: initial;
 		box-sizing: initial;
 		}
 	</style>
-
 
 	<div id="ganttChart"></div>
 	<br/><br/>
@@ -32,9 +30,9 @@
 		$(function () {
 			$("#ganttChart").ganttView({ 
 				scale: scale,
-				cellWidth: 21,
+				cellWidth: Number("{{size}}"),
 				data: ganttData,
-				slideWidth: 500,
+				slideWidth: document.getElementById('gantt_container').clientWidth - 280,
 				behavior: {
 					onClick: function (data) {/* イベント発生時の処理 */},
 					onResize: function (data) {},
