@@ -14,7 +14,7 @@
 
     <!-- ナビバー -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-info">
-        <a class="navbar-brand" href="{% url 'projects:top' %}">Projects</a>
+        <a class="navbar-brand" href="{% url 'projects:gantt' %}">Projects</a>
         <button class="navbar-toggler" type="button" 
             data-toggle="collapse" data-target="#navbarProjectsContent" 
             aria-controls="navbarProjectsContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,21 +24,21 @@
         <div class="collapse navbar-collapse" id="navbarProjectsContent">
             <ul class="navbar-nav mr-auto">
                 <li>
-                <a class="nav-item nav-link" href="{% url 'projects:add_prj' scale size %}">プロジェクト追加</a>
+                <a class="nav-item nav-link" href="{% url 'projects:add_prj' %}">プロジェクト追加</a>
                 </li>
                 <li>
-                <a class="nav-item nav-link" href="{% url 'projects:add_tsk' scale size %}">タスク追加</a>
+                <a class="nav-item nav-link" href="{% url 'projects:add_tsk' %}">タスク追加</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="btn-group btn-group-sm mr-2" role="group">
-                    <a class="btn btn-secondary" role="button" href="{% url 'projects:gantt' "d" size %}">日</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'projects:gantt' "m" size %}">月</a>
+                    <a class="btn btn-secondary" role="button" href="{% url 'projects:scaleD' %}">日</a>
+                    <a class="btn btn-secondary" role="button" href="{% url 'projects:scaleM' %}">月</a>
                     <a class="btn btn-secondary" role="button" href="#">年</a>
                 </li>
                 <li class="btn-group btn-group-sm" role="group">
-                    <a class="btn btn-secondary" role="button" href="{% url 'projects:sizedown' scale size %}"> - </a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'projects:sizeup' scale size %}"> + </a>
+                    <a class="btn btn-secondary" role="button" href="{% url 'projects:sizedown' %}"> - </a>
+                    <a class="btn btn-secondary" role="button" href="{% url 'projects:sizeup' %}"> + </a>
                 </li>
             </ul>
         </div>

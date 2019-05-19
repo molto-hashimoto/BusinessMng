@@ -23,14 +23,17 @@
 	<script src="{% static 'projects/data.js' %}"></script>
 	<script>
 
-		scale = "{{scale}}";
+		scale = "{{ request.session.scale }}";
+		size = Number("{{ request.session.size }}");
 		tmp = "{{gantt_data}}".split('&#39;').join('"');
+
+		// json -> object
 		ganttData = JSON.parse(tmp);
 
 		$(function () {
 			$("#ganttChart").ganttView({ 
 				scale: scale,
-				cellWidth: Number("{{size}}"),
+				cellWidth: size,
 				data: ganttData,
 				slideWidth: document.getElementById('gantt_container').clientWidth - 280,
 				behavior: {

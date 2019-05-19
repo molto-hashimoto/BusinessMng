@@ -12,6 +12,15 @@ import json
 import logging
 logger = logging.getLogger('command')
 
+# 表示スケール
+SCALE_D = 'd'
+SCALE_M = 'm'
+SCALE_Y = 'y'
+# セルサイズ
+CELL_SIZE_DEF = 21
+CELL_SIZE_MIN = 20
+CELL_SIZE_MAX = 100
+
 def createGanttData():
     
     prj_data = []
@@ -40,7 +49,14 @@ def createGanttData():
 
 # ガントチャートデフォルトスケール月単位でリダイレクトする
 class top(generic.RedirectView):
-    url = "gantt/m/21"
+    url = "gantt/"
+    url = reverse_lazy('projects:gantt')
+
+    def get(self, request, **kwargs):
+        # scale,sizeをデフォルト値に設定
+        self.request.session['scale'] = SCALE_M
+        self.request.session['size'] = CELL_SIZE_DEF
+        return super().get(request, **kwargs)
 
 class gantt(generic.TemplateView):
     template_name = 'projects/gantt.html'
@@ -49,35 +65,54 @@ class gantt(generic.TemplateView):
         context = super().get_context_data(**kwargs) # はじめに継承元のメソッドを呼び出す
         logger.info(str(self.request.user) + ' : ' + str(self.request.user.is_authenticated))
 
+        # ガントチャートデータを生成、受け渡し
         context["gantt_data"] = createGanttData()
-        context["scale"] = self.kwargs.get('scale')
-        context["size"] = self.kwargs.get('size')
+
         return context
 
+class scaleD(generic.RedirectView):
+    url = reverse_lazy('projects:gantt')
+
+    def get(self, request, **kwargs):
+        # scaleのみ変更
+        self.request.session['scale'] = SCALE_D
+        return super().get(request, **kwargs)
+
+class scaleM(generic.RedirectView):
+    url = reverse_lazy('projects:gantt')
+
+    def get(self, request, **kwargs):
+        # scaleのみ変更
+        self.request.session['scale'] = SCALE_M
+        return super().get(request, **kwargs)
+
 class sizeup(generic.RedirectView):
+    url = reverse_lazy('projects:gantt')
 
-    def get_redirect_url(self, *args, **kwargs):
-
-        size = self.kwargs['size']
-        if (size <= 100):
-            size += 20
-        self.url = reverse('projects:gantt', kwargs={'scale': self.kwargs['scale'], 'size': size})
-        return super().get_redirect_url(*args, **kwargs) 
+    def get(self, request, **kwargs):
+        # size変更
+        size = self.request.session['size']
+        if (size <= CELL_SIZE_MAX):
+            size += CELL_SIZE_MIN
+        self.request.session['size'] = size
+        return super().get(request, **kwargs)
 
 class sizedown(generic.RedirectView):
+    url = reverse_lazy('projects:gantt')
 
-    def get_redirect_url(self, *args, **kwargs):
-
-        size = self.kwargs['size']
-        if (size > 40):
-            size -= 20
-        self.url = reverse('projects:gantt', kwargs={'scale': self.kwargs['scale'], 'size': size})
-        return super().get_redirect_url(*args, **kwargs) 
+    def get(self, request, **kwargs):
+        # size変更
+        size = self.request.session['size']
+        if (size > (CELL_SIZE_MIN*2)):
+            size -= CELL_SIZE_MIN
+        self.request.session['size'] = size
+        return super().get(request, **kwargs)
 
 class add_prj(generic.CreateView):
     model = mdl_Project
     form_class = form_prj
     template_name = "projects/add_contents.html"
+    success_url = reverse_lazy('projects:gantt')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs) # はじめに継承元のメソッドを呼び出す
@@ -85,18 +120,13 @@ class add_prj(generic.CreateView):
         context["header_text"] = "プロジェクト追加"
         # レイアウト設定
         context["layout"] = "col-md-6 offset-md-3"
-        context["scale"] = self.kwargs.get('scale')
-        context["size"] = self.kwargs.get('size')
         return context
-
-    def get_success_url(self):
-        self.success_url = reverse('projects:gantt', kwargs={'scale': self.kwargs['scale'], 'size': self.kwargs['size']})
-        return self.success_url
 
 class add_tsk(generic.CreateView):
     model = mdl_Task
     form_class = form_tsk
     template_name = "projects/add_contents.html"
+    success_url = reverse_lazy('projects:gantt')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs) # はじめに継承元のメソッドを呼び出す
@@ -104,10 +134,4 @@ class add_tsk(generic.CreateView):
         context["header_text"] = "タスク追加"
         # レイアウト設定
         context["layout"] = "col-md-6 offset-md-3"
-        context["scale"] = self.kwargs.get('scale')
-        context["size"] = self.kwargs.get('size')
         return context
-
-    def get_success_url(self):
-        self.success_url = reverse('projects:gantt', kwargs={'scale': self.kwargs['scale'], 'size': self.kwargs['size']})
-        return self.success_url
